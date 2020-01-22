@@ -1,3 +1,9 @@
+# WARNING - IN DEVELOPMENT
+
+Right now, this is being initially created and developed, once it's ready to use (within the next day or so), I will publish version 1.0.0, and you can start with that.
+
+The main export of this application will be a function with a console.log statement.
+
 # ms-sqlcmd
 
 This package makes it easier to execute `sqlcmd` scripts from node.js.  It will use an mssql url string as a connection string. The path should be `/INSTANCENAME/DATABASENAME` or simply `/DATABASENAME`.  The fields should be encoded via `encodeURIComponent` in order to facilitate special characters, especially in passphrases that might otherwise interfere or have special characters.
@@ -6,7 +12,7 @@ As the [mssql](https://github.com/tediousjs/node-mssql) and underlying [tediuous
 
 Script file(s) should be encoded in UTF-8, they will be written in a temporary location for execution, and cleaned up (via UTF-16LE / Unicode in sqlcmd).
 
-4
+
 ## Usage
 
 ```
