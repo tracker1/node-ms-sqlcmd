@@ -1,0 +1,103 @@
+{
+  "name": "ms-sqlcmd",
+  "version": "0.0.0",
+  "description": "Wrapper library for sqlcmd locally or inside a docker instance.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tracker1/node-ms-sqlcmd.git"
+  },
+  "keywords": [
+    "sqlcmd",
+    "sql",
+    "server",
+    "sql",
+    "mssql"
+  ],
+  "author": "Michael J. Ryan <tracker1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tracker1/node-ms-sqlcmd/issues"
+  },
+  "homepage": "https://github.com/tracker1/node-ms-sqlcmd#readme",
+  "dependencies": {
+    "docker-cli-js": "^2.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.8.3",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "esm": "^3.2.25",
+    "jest": "^25.1.0",
+    "jest-esm-transformer": "^1.0.0",
+    "prettier": "^1.19.1"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "parser": "babel",
+    "jsxBracketSameLine": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "prettier"
+    ],
+    "plugins": [
+      "prettier",
+      "jest"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 2018
+    },
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "prettier/prettier": "error",
+      "no-new-func": "off"
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/*",
+    "coverage/*",
+    "dist/*"
+  ],
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "\\.m?js$": "jest-esm-transformer"
+    },
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/**/*.js"
+    ],
+    "coverageDirectory": "coverage"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-modules-commonjs",
+        {
+          "allowTopLevelThis": true
+        }
+      ]
+    ]
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist --source-maps",
+    "postbuild": "node -r esm scripts/postbuild.js",
+    "pretest": "eslint \"./**/*.js\"",
+    "test": "jest",
+    "lint": "eslint --fix \"./**/*.js\""
+  }
+}
