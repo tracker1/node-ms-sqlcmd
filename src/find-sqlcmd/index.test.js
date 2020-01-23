@@ -1,30 +1,33 @@
-import { SQLCMD_NOT_FOUND_ERROR } from '../errors';
-
+// mocks before imports
 jest.mock('which', () => jest.fn());
-const which = require('which');
-const { default: findSqlcmd, getPathSeparator } = require('./index');
+jest.mock('./find-in-known-paths', () => jest.fn());
+
+// imports
+import { SQLCMD_NOT_FOUND_ERROR } from '../errors';
+import which from 'which';
+import findInKnownPaths from './find-in-known-paths';
+import findSqlcmd from './index';
 
 describe('find-sqlcmd/index', () => {
-  describe('getPathSeparator', () => {
-    it('will return ; for win32', () => {
-      expect(getPathSeparator('win32')).toEqual(';');
-    });
-    it('will return : for non-win32', () => {
-      expect(getPathSeparator('other')).toEqual(':');
-    });
-  });
-
   it('will return which result if found', async () => {
     const expected = Math.random().toString();
-    // console.log('\n--- IN TEST\n', which, '\n\n----\n');
     which.mockImplementationOnce(() => Promise.resolve(expected));
-    const result = await findSqlcmd('win32');
+    const result = await findSqlcmd();
+    expect(result).toEqual(expected);
+  });
+
+  it('will return fallback to findInKnownPaths if found', async () => {
+    const expected = Math.random().toString();
+    which.mockImplementationOnce(() => Promise.reject(null));
+    findInKnownPaths.mockImplementationOnce(() => Promise.resolve(expected));
+    const result = await findSqlcmd();
     expect(result).toEqual(expected);
   });
 
   it('will throw SQLCMD_NOT_FOUND_ERROR if not found', async () => {
     expect.assertions(1);
-    which.mockImplementationOnce(() => Promise.reject({ message: 'not found', code: 'ENOENT' }));
+    which.mockImplementationOnce(() => Promise.reject(null));
+    findInKnownPaths.mockImplementationOnce(() => Promise.reject(null));
     try {
       await findSqlcmd();
     } catch (error) {

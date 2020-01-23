@@ -1,16 +1,16 @@
 import which from 'which';
-import getKnownPaths from './get-known-paths';
+import findInKnownPaths from './find-in-known-paths';
 import { SQLCMD_NOT_FOUND_ERROR } from '../errors';
 
-export const getPathSeparator = platform => (platform === 'win32' ? ';' : ':');
-
 export default async (platform = process.platform) => {
-  // add knownpaths to environment
-  const pathSeparator = getPathSeparator(platform);
-  const paths = process.env.PATH.split(pathSeparator)
-    .concat(getKnownPaths(platform))
-    .join(pathSeparator);
+  // search in system path
+  let sqlcmd = await which('sqlcmd').catch(() => null);
+  if (sqlcmd) return sqlcmd;
 
-  // find sqlcmd in paths
-  return which('sqlcmd', { path: paths }).catch(() => Promise.reject(SQLCMD_NOT_FOUND_ERROR));
+  // fallback to known paths
+  sqlcmd = await findInKnownPaths().catch(() => null);
+
+  if (!sqlcmd) throw SQLCMD_NOT_FOUND_ERROR;
+
+  return sqlcmd;
 };
