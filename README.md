@@ -31,23 +31,20 @@ const connectionString = 'mssql://sa:password@server:port/database';
 
 // path to the script to run, should prefer absolute paths, or relative to the current working directory.
 // see Connection String below
-const scriptPath = path.join(__dirname, '../sql-scripts/somescript.sql');
+const scripts = [
+  path.join(__dirname, '../sql-scripts/somescript.sql'),
+];
 
 // Optional, script variables, for scripts using `:setvar` and `$(VarName)`
 const scriptVars = {
   "DatabaseName": "foo"
 };
 
-// Additional Options
-const options = {
-  // see Options section below
-};
-
 // call sqlcmd with the parameters, if you want to pass options, without scriptVars, use null for scriptVars.
 // returns a promise, you can await on it directly, or listen for specific events.
 try {
   // if sqlcmd returns with a non-zero exit code, an error will be thrown
-  const output = await sqlcmd(connectionString, scriptPath, scriptVars, options);
+  const output = await sqlcmd(connectionString, scripts);
 } catch(error) {
   // standard properties set on error object other error properties may also be set
   //   if a code of "INVALID_CONNECTION_STRING" is used, there will be an innerError property
@@ -68,9 +65,9 @@ The error should have a `code` property.  This will be a string you can match on
 
 ### Connection String
 
-The main portions of the connectionString are as follows:
+The main portions of the connectionString are as follows: (See Query String section below)
 
-`Protocol://Username:Passphrase@ServerName:Port/InstanceName/DatabaseName`
+`Protocol://Username:Passphrase@ServerName:Port/InstanceName/DatabaseName?Query`
 
 Each section should be URI Component Path encoded (encodeURIComponent).
 
@@ -80,7 +77,7 @@ Each section should be URI Component Path encoded (encodeURIComponent).
   * `msssql+lpc:` - shared memory
   * `mssql+np:` - named pipes
   * `mssql+docker` - will run a default connection *INSIDE* a named container
-* Username: Required for TCP connections, if otherwise unspecified will use a Trusted Connection option.
+* Username: Required for TCP connections, if unspecified will use a Trusted Connection option.
 * Passphrase: Required if Username is specified.
 * ServerName: The name of the server to connect to.
   * `localhost` for local connections (lpc, np, tcp)
@@ -91,7 +88,8 @@ Each section should be URI Component Path encoded (encodeURIComponent).
   * Named Instance (tcp, lcp, np)
   * Container ID or Name (docker)
   * If unspecifed, will use the default instance
-* DatabaseName: The name of the database to connect to, may include the schema.
+* DatabaseName: The name of the database to connect to.
+* Query: See below
 
 #### Docker
 
@@ -102,26 +100,16 @@ For Docker runs, the ServerName and Port will be ignored as the default instance
 #### Query String
 
 The following query string parameters may also be specified as additional parameters passed to `sqlcmd`.
-Boolean values may be a literal `true`, `t`, `y` or `1` as a boolean or string for a true value, all other 
-values will be considered false.
+Boolean values may be a literal `true`, `t`, `y` or `1` as a boolean or string for a true value, `false`, `f`, `n`, or `1` for a false value, all other 
+values will use the default/unset value.
 
 * dedicatedAdminConnection Boolean (-A) - Logs in to SQL Server with a Dedicated Administrator Connection (DAC). This kind of connection is used to troubleshoot a server. This will only work with server computers that support DAC. If DAC is not available, sqlcmd generates an error and then exits. (-A)
 * trustServerCert Boolean (-C) - This switch is used by the client to configure it to implicitly trust the server certificate without validation. This option is equivalent to the ADO.NET option
-* loginTimeout Integer/Seconds (-l) - Specifies the number of seconds before a sqlcmd login to the ODBC driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default time-out for login to sqlcmd is eight seconds. The login time-out must be a number between 0 and 65534. A value of 0 specifies time-out to be infinite.
+* loginTimeout Integer (-l) - Specifies the number of seconds before a sqlcmd login to the ODBC driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default time-out for login to sqlcmd is eight seconds. The login time-out must be a number between 0 and 65534. A value of 0 specifies time-out to be infinite.
 * readOnly Boolean - Declares the application workload type (-K) as `ReadOnly` when connecting to a server. If specified, the sqlcmd utility will not support connectivity to a secondary replica in an AlwaysOn availability group.
+* multisubnetFailover Boolean (-M) - Always specify this option when connecting to the availability group listener of a SQL Server availability group or a SQL Server Failover Cluster Instance. This option provides for faster detection of and connection to the (currently) active server. If this option is not specified, it is off. (-M)
+* encryptedConnection Boolean (-N) - This switch is used by the client to request an encrypted connection.
 
- 
-    // Always specify this option when connecting to the availability group listener of a 
-    // SQL Server availability group or a SQL Server Failover Cluster Instance. This 
-    // option provides for faster detection of and connection to the (currently) active 
-    // server. If this option is not specified, it is off. (-M)
-    multisubnetFailover: true|false,
- 
-    // This switch is used by the client to request an encrypted connection. (-N)
-    encryptedConnection: true|false,
-
-
-### Options
 
 ## Other Details
 
