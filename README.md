@@ -6,6 +6,8 @@ The main export of this application will be a function with a console.log statem
 
 # ms-sqlcmd
 
+[![Actions Status](https://github.com/{owner}/{repo}/workflows/{workflow_name}/badge.svg)](https://github.com/{owner}/{repo}/actions)
+
 This package makes it easier to execute `sqlcmd` scripts from node.js.  It will use an mssql url string as a connection string. The path should be `/INSTANCENAME/DATABASENAME` or simply `/DATABASENAME`.  The fields should be encoded via `encodeURIComponent` in order to facilitate special characters, especially in passphrases that might otherwise interfere or have special characters.
 
 As the [mssql](https://github.com/tediousjs/node-mssql) and underlying [tediuous](https://github.com/tediousjs/tedious) packages favor TCP connections, this library will default to matching constraints.  You should of course make certain that your SQL Server installation is setup to listen to TCP connection requests.
