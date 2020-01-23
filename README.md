@@ -10,11 +10,12 @@ The main export of this application will be a function with a console.log statem
 ![Github Issues](https://img.shields.io/github/issues/tracker1/node-ms-sqlcmd?style=plastic) 
 [![License](https://img.shields.io/github/license/tracker1/node-ms-sqlcmd)](./LICENSE)
 [![npm version](https://img.shields.io/github/package-json/v/tracker1/node-ms-sqlcmd)](https://www.npmjs.com/package/ms-sqlcmd)
-[![](https://img.shields.io/librariesio/release/npm/ms-sqlcmd)](https://github.com/tracker1/node-ms-sqlcmd)
+[![Dependency Status](https://img.shields.io/librariesio/release/npm/ms-sqlcmd)](https://libraries.io/npm/ms-sqlcmd)
+[![Code Coverage](https://img.shields.io/coveralls/github/tracker1/node-ms-sqlcmd)](https://github.com/tracker1/node-ms-sqlcmd)
 
 This package makes it easier to execute `sqlcmd` scripts from node.js.  It will use an mssql url string as a connection string. The path should be `/INSTANCENAME/DATABASENAME` or simply `/DATABASENAME`.  The fields should be encoded via `encodeURIComponent` in order to facilitate special characters, especially in passphrases that might otherwise interfere or have special characters.
 
-As the [mssql](https://github.com/tediousjs/node-mssql) and underlying [tediuous](https://github.com/tediousjs/tedious) packages favor TCP connections, this library will default to matching constraints.  You should of course make certain that your SQL Server installation is setup to listen to TCP connection requests.
+As the [mssql](https://github.com/tediousjs/node-mssql) and underlying [tedious](https://github.com/tediousjs/tedious) packages favor TCP connections, this library will default to matching constraints.  You should of course make certain that your SQL Server installation is setup to listen to TCP connection requests.
 
 Script file(s) should be encoded in UTF-8, they will be written in a temporary location for execution, and cleaned up (via UTF-16LE / Unicode in sqlcmd).
 
