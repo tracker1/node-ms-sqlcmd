@@ -21,7 +21,7 @@ Script file(s) should be encoded in UTF-8, they will be written in a temporary l
 
 ## Usage
 
-```
+```js
 const { sqlcmd } = require('ms-sqlcmd');
 ...
 // mssql url formatted connection string - for now, no querystring options will be parsed
