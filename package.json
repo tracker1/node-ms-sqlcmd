@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/tracker1/node-ms-sqlcmd#readme",
   "dependencies": {
-    "docker-cli-js": "^2.6.0"
+    "babel-jest": "^25.1.0",
+    "docker-cli-js": "^2.6.0",
+    "which": "^2.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
@@ -75,13 +77,21 @@
   "jest": {
     "verbose": true,
     "transform": {
-      "\\.m?js$": "jest-esm-transformer"
+      "\\.m?jsx?$": "babel-jest"
     },
     "collectCoverageFrom": [
       "src/*.js",
       "src/**/*.js"
     ],
-    "coverageDirectory": "coverage"
+    "coverageDirectory": "coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    }
   },
   "babel": {
     "plugins": [
@@ -97,7 +107,7 @@
     "build": "babel src --out-dir dist --source-maps",
     "postbuild": "node -r esm scripts/postbuild.js",
     "pretest": "eslint \"./**/*.js\"",
-    "test": "jest",
+    "test": "jest --coverage --runInBand --no-cache",
     "lint": "eslint --fix \"./**/*.js\"",
     "publish-major": "npm version major && git push origin master && git push --tags",
     "publish-minor": "npm version minor && git push origin master && git push --tags",

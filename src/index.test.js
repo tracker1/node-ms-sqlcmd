@@ -1,11 +1,16 @@
-import sit from './index';
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+import sit, { tempStatement } from './index';
 
 describe('index - Default method', () => {
-  it('will export a function', async () => {
-    expect.assertions(1);
-    await delay(100);
+  it('will export a function', () => {
     expect(sit).toBeInstanceOf(Function);
+  });
+
+  it('will throw the expected statement when called', () => {
+    expect.assertions(1);
+    try {
+      sit();
+    } catch (error) {
+      expect(error.message).toBe(tempStatement);
+    }
   });
 });
