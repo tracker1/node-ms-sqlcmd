@@ -6,7 +6,7 @@ The main export of this application will be a function with a console.log statem
 
 # ms-sqlcmd
 
-[![Actions Status](https://github.com/tracker1/node-ms-sqlcmd/workflows/Run%20Tests/badge.svg)](https://github.com/tracker1/node-ms-sqlcmd/actions)
+[![Actions Status](https://github.com/tracker1/node-ms-sqlcmd/workflows/Run%20Tests/badge.svg)](https://github.com/tracker1/node-ms-sqlcmd/actions) ![Github Issues](https://img.shields.io/github/issues/tracker1/node-ms-sqlcmd?style=plastic) ![License](https://img.shields.io/github/license/tracker1/node-ms-sqlcmd)
 
 This package makes it easier to execute `sqlcmd` scripts from node.js.  It will use an mssql url string as a connection string. The path should be `/INSTANCENAME/DATABASENAME` or simply `/DATABASENAME`.  The fields should be encoded via `encodeURIComponent` in order to facilitate special characters, especially in passphrases that might otherwise interfere or have special characters.
 
