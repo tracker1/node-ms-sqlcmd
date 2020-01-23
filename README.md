@@ -81,9 +81,11 @@ Each section should be URI Component Path encoded (encodeURIComponent).
 * Passphrase: Required if Username is specified.
 * ServerName: The name of the server to connect to.
   * `localhost` for local connections (lpc, np, tcp)
+    * For docker users, always use `localhost`
   * The dns or ip address for the server for remote connections (tcp)
   * `docker` for execution inside a docker sql server instance.
 * Port: (optional) the port to connect to the server on, TCP Only
+  * Docker users, use the listen port, this will allow the command to attempt match a running container.
 * InstanceName: (optional)
   * Named Instance (tcp, lcp, np)
   * Container ID or Name (docker)
