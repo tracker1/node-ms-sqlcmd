@@ -18,7 +18,7 @@ describe('parse-connectionstring/parse-searchparams', () => {
       dedicatedAdminConnection: true,
       trustServerCert: true,
       loginTimeout: 15,
-      applicationIntent: 'ReadOnly',
+      readOnly: true,
       multisubnetFailover: true,
       encryptedConnection: true,
     });

@@ -32,7 +32,7 @@ const mapParam = ([name, value]) => {
     case 'logintimeout':
       return { loginTimeout: parseSeconds(value) };
     case 'readonly':
-      return { applicationIntent: parseBool(value, null) ? 'ReadOnly' : null };
+      return { readOnly: parseBool(value, false) || null };
     case 'multisubnetfailover':
       return { multisubnetFailover: parseBool(value, false) || null };
     case 'encryptedconnection':
