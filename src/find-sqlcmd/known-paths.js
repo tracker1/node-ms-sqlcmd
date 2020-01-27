@@ -14,6 +14,6 @@ const getKnownPaths = (platform = process.platform, ostype = process.env.OSTYPE)
   return []; // no known paths to search
 };
 
-export const __internals = { linuxPaths, knownPaths, knownPathsNix };
+export const __internal = { linuxPaths, knownPaths, knownPathsNix };
 
 export default getKnownPaths;

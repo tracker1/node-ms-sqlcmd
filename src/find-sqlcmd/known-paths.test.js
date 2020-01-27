@@ -1,5 +1,5 @@
-import getKnownPaths, { __internals } from './known-paths';
-const { linuxPaths, knownPaths, knownPathsNix } = __internals;
+import getKnownPaths, { __internal } from './known-paths';
+const { linuxPaths, knownPaths, knownPathsNix } = __internal;
 
 describe('find-sqlcmd/known-paths', () => {
   it('will return linuxPaths if platform is linux', () => {

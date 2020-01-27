@@ -7,6 +7,9 @@ export const INVALID_CONNECTION_STRING_MESSAGE = 'The specified connection strin
 export const SQLCMD_NOT_FOUND = 'SQLCMD_NOT_FOUND';
 export const SQLCMD_NOT_FOUND_MESSAGE = 'The sqlcmd executable was not found.';
 
+export const DOCKER_NOT_FOUND = 'DOCKER_NOT_FOUND';
+export const DOCKER_NOT_FOUND_MESSAGE = 'The docker command was not found.';
+
 export const generateError = (message, props) =>
   Object.assign(new Error(message), { stack: undefined, ...props });
 
@@ -20,4 +23,13 @@ export const SQLCMD_NOT_FOUND_ERROR = generateError(SQLCMD_NOT_FOUND_MESSAGE, {
   code: SQLCMD_NOT_FOUND,
 });
 
-export default { wrapUnexpectedError, invalidConnectionString, SQLCMD_NOT_FOUND_ERROR };
+export const DOCKER_NOT_FOUND_ERROR = generateError(DOCKER_NOT_FOUND_MESSAGE, {
+  code: DOCKER_NOT_FOUND,
+});
+
+export default {
+  wrapUnexpectedError,
+  invalidConnectionString,
+  SQLCMD_NOT_FOUND_ERROR,
+  DOCKER_NOT_FOUND_ERROR,
+};

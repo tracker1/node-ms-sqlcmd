@@ -6,6 +6,7 @@ describe('errors.js - error helpers and constants', () => {
       wrapUnexpectedError: errors.wrapUnexpectedError,
       invalidConnectionString: errors.invalidConnectionString,
       SQLCMD_NOT_FOUND_ERROR: errors.SQLCMD_NOT_FOUND_ERROR,
+      DOCKER_NOT_FOUND_ERROR: errors.DOCKER_NOT_FOUND_ERROR,
     });
   });
   it('wrapUnexpectedError returns an expected result', () => {
