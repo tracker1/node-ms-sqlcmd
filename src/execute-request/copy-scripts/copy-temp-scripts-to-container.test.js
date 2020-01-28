@@ -1,10 +1,10 @@
 // mocks
 jest.mock('../../utility/docker-command', () => jest.fn());
-jest.mock('../../utility/generate-temp-sql-name', () => jest.fn());
+jest.mock('../../utility/generate-temp-sql-name', () => ({ genFileBase: jest.fn() }));
 
 // import mocks
 import dockerCommand from '../../utility/docker-command';
-import generateName from '../../utility/generate-temp-sql-name';
+import { genFileBase } from '../../utility/generate-temp-sql-name';
 
 // import sit
 import copyScriptToContainer, { __internal } from './copy-temp-scripts-to-container';
@@ -21,13 +21,13 @@ describe('execute-request/copy-scripts/copy-temp-script-to-container', () => {
   });
   it('will copy file into container (happy path)', async () => {
     dockerCommand.mockReset().mockImplementation(() => Promise.resolve());
-    generateName.mockReset().mockImplementation(() => 'not_random');
+    genFileBase.mockReset().mockImplementation(() => 'not_random');
     const result = await copyScriptToContainer('containerId', 'test-file');
     expect(result).toEqual({
       from: 'test-file',
-      to: `${sqlTempPath}/not_random`,
+      to: `${sqlTempPath}/not_random.sql`,
     });
-    expect(generateName).toHaveBeenCalledTimes(1);
+    expect(genFileBase).toHaveBeenCalledTimes(1);
     expect(dockerCommand).toHaveBeenCalledTimes(2);
     expect(dockerCommand).toHaveBeenNthCalledWith(1, fmtMakeTemp('containerId', sqlTempPath));
     expect(dockerCommand).toHaveBeenNthCalledWith(

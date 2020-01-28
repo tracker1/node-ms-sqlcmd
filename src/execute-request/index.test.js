@@ -20,7 +20,7 @@ import executeLocal from './execute-request-local';
 import executeRequest from './index';
 
 describe('execute-request/index', () => {
-  const options = {};
+  let options = {};
 
   const connectionString = 'connectionString';
   const scripts = ['test1', 'test2'];
@@ -29,6 +29,7 @@ describe('execute-request/index', () => {
   const scriptList = ['/to/test1', '/to/test2'];
 
   beforeEach(() => {
+    options = {};
     resolveOptions.mockReset().mockImplementation(() => options);
     executeLocal.mockReset().mockImplementation(() => Promise.resolve());
     executeDocker.mockReset().mockImplementation(() => Promise.resolve());
@@ -53,7 +54,7 @@ describe('execute-request/index', () => {
 
   it('will raise error', async () => {
     const expected = Math.random();
-    jest.fn().mockRejectedValue(expected);
+    executeLocal.mockReset().mockImplementation(() => Promise.reject(expected));
     try {
       await executeRequest(connectionString, scripts, vars);
     } catch (error) {

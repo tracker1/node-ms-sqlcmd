@@ -1,5 +1,5 @@
 import dockerCommand from '../../utility/docker-command';
-import generateName from '../../utility/generate-temp-sql-name';
+import { genFileBase } from '../../utility/generate-temp-sql-name';
 
 const sqlTempPath = `/var/opt/mssql/tmp`;
 const fmtMakeTemp = (containerId, sqlTempPath) => `exec -i ${containerId} mkdir -p ${sqlTempPath}`;
@@ -11,7 +11,7 @@ const copyScriptToContainer = async (containerId, from) => {
   await dockerCommand(fmtMakeTemp(containerId, sqlTempPath));
 
   // copy file into container
-  var to = `${sqlTempPath}/${generateName()}`;
+  var to = `${sqlTempPath}/${genFileBase()}.sql`;
   await dockerCommand(fmtCopy(from, to, containerId));
   return { from, to };
 };

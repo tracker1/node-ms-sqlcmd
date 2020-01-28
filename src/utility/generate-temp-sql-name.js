@@ -1,8 +1,7 @@
 import os from 'os';
 import path from 'path';
 
-const tempNameGen = () => {
-  const tmp = os.tmpdir();
+export const genFileBase = () => {
   const dtm = new Date()
     .toJSON()
     .replace(/\D/g, '')
@@ -11,7 +10,12 @@ const tempNameGen = () => {
     .toString(26)
     .substr(2)
     .toLowerCase();
-  return path.normalize(`${tmp}/sqlcmd_${dtm}_${rnd}.sql`);
+  return `sqlcmd_${dtm}_${rnd}`;
+};
+
+const tempNameGen = () => {
+  const tmp = os.tmpdir();
+  return path.normalize(`${tmp}/${genFileBase()}.sql`);
 };
 
 export default tempNameGen;
