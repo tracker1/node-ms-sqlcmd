@@ -1,8 +1,8 @@
 import resolveOptions from '../resolve-options';
-import executeLocal from './execute-request-local';
-import executeDocker from './execute-request-docker';
 import copyScripts from './copy-scripts/copy-input-scripts-local';
 import deleteAll from '../utility/delete-all';
+import executeLocal from './execute-request-local';
+import executeDocker from './execute-request-docker';
 
 const executeRequest = async (connectionString, scripts, vars) => {
   const options = await resolveOptions(connectionString);
