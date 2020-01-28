@@ -1,3 +1,0 @@
-import parseConnectionString from '../parse-connectionstring';
-
-describe('resolve-options/handle-docker-options', () => {});

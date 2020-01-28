@@ -37,7 +37,7 @@ const parseUrlBase = url => ({
   ...parseUsernamePassword(url),
   ...parsePath(url.pathname),
   server: url.hostname,
-  port: +url.port || null, // will set against default later...
+  port: +url.port || null, // will set default elsewhere.
 });
 
 export const __internal = { parseProtocol, parseUsernamePassword, parsePath };

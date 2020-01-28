@@ -2,7 +2,7 @@
 
 Right now, this is being initially created and developed, once it's ready to use (within the next day or so), I will publish version 1.0.0, and you can start with that.
 
-The main export of this application will be a function with a console.log statement.
+The main export of this library will throw while in development.
 
 # ms-sqlcmd
 
@@ -44,7 +44,7 @@ const scriptVars = {
 // returns a promise, you can await on it directly, or listen for specific events.
 try {
   // if sqlcmd returns with a non-zero exit code, an error will be thrown
-  const output = await sqlcmd(connectionString, scripts);
+  const output = await sqlcmd(connectionString, scripts, scriptVars);
 } catch(error) {
   // standard properties set on error object other error properties may also be set
   //   if a code of "INVALID_CONNECTION_STRING" is used, there will be an innerError property

@@ -1,6 +1,5 @@
 import which from 'which';
 import findInKnownPaths from './find-in-known-paths';
-import { SQLCMD_NOT_FOUND_ERROR } from '../errors';
 
 export default async (platform = process.platform) => {
   // search in system path
@@ -10,7 +9,6 @@ export default async (platform = process.platform) => {
   // fallback to known paths
   sqlcmd = await findInKnownPaths().catch(() => null);
 
-  if (!sqlcmd) throw SQLCMD_NOT_FOUND_ERROR;
-
+  // don't throw here
   return sqlcmd;
 };

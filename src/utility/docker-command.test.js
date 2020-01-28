@@ -3,24 +3,18 @@ jest.mock('docker-cli-js', () => ({ Docker: jest.fn() }));
 
 // import mocks;
 import { Docker } from 'docker-cli-js';
+const dockerCommand = jest.fn();
+Docker.mockImplementationOnce(() => ({ command: dockerCommand }));
 
 // other imports
-import { DOCKER_NOT_FOUND_ERROR } from './errors';
+import { DOCKER_NOT_FOUND_ERROR } from '../errors';
 
 // import situation in test
-import getDockerCommand, { __internal } from './docker-command';
+import dc from './docker-command';
 
-describe('docker-command', () => {
-  const dockerCommand = jest.fn();
-  let dc;
-
+describe('utility/docker-command', () => {
   beforeEach(() => {
-    __internal.reset();
     dockerCommand.mockReset();
-    Docker.mockReset().mockReturnValue({
-      command: dockerCommand,
-    });
-    dc = getDockerCommand();
   });
 
   it('exports as expected', async () => {
@@ -77,15 +71,5 @@ describe('docker-command', () => {
     } catch (error) {
       expect(error).toEqual(expected);
     }
-  });
-
-  it('will return cached result', async () => {
-    const expected = jest.fn();
-    Docker.mockReset().mockImplementationOnce(() => ({
-      command: expected,
-    }));
-    const first = await getDockerCommand();
-    const second = await getDockerCommand();
-    expect(first).toEqual(second);
   });
 });

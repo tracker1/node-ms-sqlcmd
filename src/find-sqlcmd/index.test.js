@@ -24,14 +24,9 @@ describe('find-sqlcmd/index', () => {
     expect(result).toEqual(expected);
   });
 
-  it('will throw SQLCMD_NOT_FOUND_ERROR if not found', async () => {
-    expect.assertions(1);
+  it('will return null if not found', async () => {
     which.mockImplementationOnce(() => Promise.reject(null));
     findInKnownPaths.mockImplementationOnce(() => Promise.reject(null));
-    try {
-      await findSqlcmd();
-    } catch (error) {
-      expect(error).toEqual(SQLCMD_NOT_FOUND_ERROR);
-    }
+    expect(await findSqlcmd()).toEqual(null);
   });
 });
