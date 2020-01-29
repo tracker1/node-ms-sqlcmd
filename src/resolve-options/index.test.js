@@ -50,9 +50,9 @@ describe('resolve-options/index', () => {
     expect(await resolveOptions(cs)).toEqual(expected);
   });
 
-  it('will use default port for tcp when not set', async () => {
+  it('will use null port for tcp when not set', async () => {
     parseConnectionString.mockReset().mockReturnValueOnce({ protocol: 'tcp' });
-    expect(await resolveOptions(cs)).toMatchObject({ protocol: 'tcp', port: 1433 });
+    expect(await resolveOptions(cs)).toMatchObject({ protocol: 'tcp', port: null });
   });
 
   it('will use specified port for tcp when not set', async () => {

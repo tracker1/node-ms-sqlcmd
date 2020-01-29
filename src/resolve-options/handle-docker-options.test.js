@@ -53,9 +53,9 @@ describe('resolve-options/handle-docker-options', () => {
     expect(await handleDockerOptions(null, { docker: true, port: 50000 })).toEqual({
       docker: true,
       sqlcmd: '/opt/mssql-tools/bin/sqlcmd',
-      protocol: 'tcp',
-      port: 1433,
-      server: 'localhost',
+      protocol: undefined,
+      port: undefined,
+      server: undefined,
       multisubnetFailover: undefined,
       encryptedConnection: undefined,
       containerId,
