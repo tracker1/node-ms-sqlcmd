@@ -1,26 +1,6 @@
 import getDockerInstance from './get-mssql-docker-instance';
 import { generateError, DOCKER_NOT_FOUND } from '../errors';
 
-/*
-Options available, all nullable
-{
-  docker: Boolean
-  protocol: String,
-  username: String,
-  password: String,
-  instance: String,
-  database: String,
-  server: String,
-  port: Int,
-  dedicatedAdminConnection: Boolean,
-  trustServerCert: Boolean,
-  loginTimeout: Int,
-  readOnly: Boolean,
-  multisubnetFailover: Boolean,
-  encryptedConnection: Boolean,
-  trustedConnection: Boolean
-}*/
-
 const handleDockerOptions = async (sqlcmd, options) => {
   if (!options) return null; // nothing to check
 
@@ -64,9 +44,9 @@ const handleDockerOptions = async (sqlcmd, options) => {
   return Object.assign({}, options, {
     docker: true,
     sqlcmd: '/opt/mssql-tools/bin/sqlcmd',
-    protocol: 'tcp', // default in-container
-    port: 1433, // default in-container
-    server: 'localhost', // default in-container
+    protocol: undefined, // default in-container
+    port: undefined, // default in-container
+    server: undefined, // default in-container
     multisubnetFailover: undefined, // clear, not needed
     encryptedConnection: undefined, // clear not needed
     containerId: dockerProcess['container id'], // matching docker container instance

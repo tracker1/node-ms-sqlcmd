@@ -20,7 +20,7 @@ const resolveOptions = async mssqlConnectionString => {
   }
 
   // port only set if protocol is explicitely tcp, set default port if unset
-  const port = options.protocol === 'tcp' ? options.port || 1433 : null;
+  const port = options.protocol === 'tcp' ? options.port || null : null;
 
   // normalize return values
   return {
