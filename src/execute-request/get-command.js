@@ -1,17 +1,7 @@
-const parseVars = vars => {
-  if (!vars) return [];
-  return Object.entries(vars).reduce(
-    (arr, [name, value]) => arr.concat('-v', `${name}=${value}`),
-    []
-  );
-};
+const parseVars = (vars = {}) =>
+  Object.entries(vars).reduce((arr, [name, value]) => arr.concat('-v', `${name}=${value}`), []);
 
-const parseScripts = scripts => {
-  if (!(scripts && scripts.length)) {
-    throw new Error('No scripts specified');
-  }
-  return scripts.reduce((arr, script) => arr.concat('-i', script), []);
-};
+const parseScripts = scripts => scripts.reduce((arr, script) => arr.concat('-i', script), []);
 
 const parseOptions = ({
   // parsed options object
@@ -37,6 +27,7 @@ const parseOptions = ({
 
   // set -S variable if not going to run in docker
   if (!docker) {
+    if (!server) throw new Error('No server specified');
     let svar = server;
     if (protocol) {
       svar = `${protocol}:${svar}`;
@@ -50,14 +41,14 @@ const parseOptions = ({
     args.push('-S', svar);
   }
 
-  if (username) args.push('-U', options.username);
-  if (password) args.push('-P', options.password);
-  if (database) args.push('-d', options.database);
+  if (username) args.push('-U', username);
+  if (password) args.push('-P', password);
+  if (database) args.push('-d', database);
 
   if (trustedConnection) args.push('-E');
   if (dedicatedAdminConnection) args.push('-A');
   if (trustServerCert) args.push('-C');
-  if (loginTimeout) args.push('-l', String(loginTimeout));
+  if (loginTimeout) args.push('-l', `${loginTimeout}`);
   if (readOnly) args.push('-K', 'ReadOnly');
   if (multisubnetFailover) args.push('-M');
   if (encryptedConnection) args.push('-N');
@@ -66,12 +57,16 @@ const parseOptions = ({
 };
 
 const getCommand = (options, scripts, vars) => {
+  if (!options) throw new Error('No options specified');
+  if (!(scripts && scripts.length)) {
+    throw new Error('No scripts specified');
+  }
   const { sqlcmd, docker = null, containerId = null } = options;
   return {
     sqlcmd,
     docker,
     containerId,
-    args: [...parseOptions(options), parseVars(vars), parseScripts(scripts)],
+    args: [...parseOptions(options), ...parseVars(vars), ...parseScripts(scripts)],
   };
 };
 
