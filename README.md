@@ -1,6 +1,6 @@
 # WARNING - IN DEVELOPMENT
 
-Right now, this is being initially created and developed, once it's ready to use (within the next day or so), I will publish version 1.0.0, and you can start with that.
+Right now, this is being initially created and developed, once it's ready to use (should be done by 2/4/2020), I will publish version 1.0.0, and you can start with that.
 
 The main export of this library will throw while in development.
 

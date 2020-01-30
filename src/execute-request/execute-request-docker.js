@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+// TODO: temporarily ignore file for coverage
 import copyScripts from './copy-scripts/copy-temp-scripts-to-container';
 import deleteAll from '../utility/delete-container-files';
 import getCommandArgs from './get-command-arguments';
