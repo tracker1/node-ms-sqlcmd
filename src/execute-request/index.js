@@ -4,8 +4,8 @@ import deleteAll from '../utility/delete-all';
 import executeLocal from './execute-request-local';
 import executeDocker from './execute-request-docker';
 
-const executeRequest = async (connectionString, scripts, vars) => {
-  const options = await resolveOptions(connectionString);
+const executeRequest = async (connectionString, scripts, vars, directOptions /* echo */) => {
+  const options = Object.assign(await resolveOptions(connectionString), directOptions);
   const scriptList = (await copyScripts(scripts)).map(l => l.to);
   const cleanup = () => deleteAll(scriptList);
 

@@ -40,11 +40,16 @@ const scriptVars = {
   "DatabaseName": "foo"
 };
 
+// Optional, additional options, defaults below
+const options = {
+  echo: true, // echo sqlcmd output to stdout/stderr while running
+};
+
 // call sqlcmd with the parameters, if you want to pass options, without scriptVars, use null for scriptVars.
 // returns a promise, you can await on it directly, or listen for specific events.
 try {
   // if sqlcmd returns with a non-zero exit code, an error will be thrown
-  const output = await sqlcmd(connectionString, scripts, scriptVars);
+  const output = await sqlcmd(connectionString, scripts, scriptVars, options);
 } catch(error) {
   // standard properties set on error object other error properties may also be set
   //   if a code of "INVALID_CONNECTION_STRING" is used, there will be an innerError property
