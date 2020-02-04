@@ -17,4 +17,5 @@ const copyScriptToContainer = async (containerId, from) => {
 };
 
 export const __internal = { sqlTempPath, fmtMakeTemp, fmtCopy };
-export default copyScriptToContainer;
+export default async (containerId, scripts) =>
+  Promise.all(scripts.map(s => copyScriptToContainer(containerId, s)));

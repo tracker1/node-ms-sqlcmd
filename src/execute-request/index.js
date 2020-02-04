@@ -18,6 +18,7 @@ const executeRequest = async (connectionString, scripts, vars, directOptions /* 
     await cleanup();
   } catch (error) {
     await cleanup();
+    console.log(scriptList);
     throw error;
   }
 };

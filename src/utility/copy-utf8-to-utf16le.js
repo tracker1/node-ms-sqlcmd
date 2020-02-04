@@ -1,21 +1,11 @@
 /* istanbul ignore file */
 // ignoring difficult to test simple copy transpose file
-import fs from 'fs';
-import stripBomStream from 'strip-bom-stream';
+import { promises as fsp } from 'fs';
 
-const copyFile = async ({ from, to }) =>
-  new Promise((resolve, reject) => {
-    const readStream = fs.createReadStream(from, 'utf8');
-    const writeStream = fs.createWriteStream(to, 'utf16le');
-
-    // write BOM into new stream - stripping just in case from read stream
-    writeStream.write('\ufeff');
-
-    readStream
-      .pipe(stripBomStream())
-      .pipe(writeStream)
-      .on('close', resolve)
-      .on('error', reject);
-  });
+const copyFile = async ({ from, to }) => {
+  let input = await fsp.readFile(from, 'utf8');
+  if (input.charCodeAt(0) !== 0xfeff) input = String.fromCharCode(0xfeff) + input;
+  await fsp.writeFile(to, input, 'utf16le');
+};
 
 export default copyFile;
