@@ -2,12 +2,12 @@
 // pretty conventional wrapper around spawn
 import { spawn } from 'child_process';
 
-export default (echo = false, command, ...args) =>
+export default (command, args, { echo = false, ...options }) =>
   new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
 
-    const proc = spawn(command, args);
+    const proc = spawn(command, args, options);
     proc.stdout.on('data', msg => {
       if (echo) process.stdout.write(msg);
       stdout += msg.toString('utf8');

@@ -1,5 +1,5 @@
 /* istanbul ignore file */
 // pretty conventional wrapper around spawn
-import execEcho from './exec-echo';
+import spawn from './spawn';
 
-export default (command, ...args) => execEcho(false, command, ...args);
+export default (command, ...args) => spawn(command, args, { echo: false });

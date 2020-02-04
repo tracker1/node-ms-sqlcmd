@@ -4,8 +4,8 @@ import runSqlcmd from '../../../src/index';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-describe('scripts/integration-tests/deploy', () => {
-  it('will run a deployment', async () => {
+describe('scripts/integration-tests/deploy/deploy-docker', () => {
+  it('will run a dockerized deployment', async () => {
     // arrange
     const conn = 'mssql+docker://sa:Let_Me_In@localhost:51433/';
     const scripts = [path.join(__dirname, 'deploy.sql')];

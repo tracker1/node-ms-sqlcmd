@@ -1,9 +1,3 @@
-# WARNING - IN DEVELOPMENT
-
-Right now, this is being initially created and developed, once it's ready to use (should be done by 2/4/2020), I will publish version 1.0.0, and you can start with that.
-
-The main export of this library will throw while in development.
-
 # ms-sqlcmd
 
 [![npm version](https://img.shields.io/github/package-json/v/tracker1/node-ms-sqlcmd)](https://www.npmjs.com/package/ms-sqlcmd)

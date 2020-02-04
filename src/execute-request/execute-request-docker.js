@@ -3,7 +3,7 @@
 import copyScripts from './copy-scripts/copy-temp-scripts-to-container';
 import deleteAll from '../utility/delete-container-files';
 import getCommandArgs from './get-command';
-import exec from '../utility/exec-echo';
+import spawn from '../utility/spawn';
 
 const executeDocker = async (options, scripts, variables) => {
   // copy scripts into container
@@ -13,16 +13,18 @@ const executeDocker = async (options, scripts, variables) => {
   try {
     const { sqlcmd, containerId, args, vars } = getCommandArgs(options, scripts, variables);
 
-    var result = await exec(
-      options.echo,
+    var result = await spawn(
       'docker',
-      'exec',
-      '-i',
-      // map sqlcmd var entries to docker variable entries
-      ...vars.map(v => (v === '-v' ? '-e' : v)),
-      containerId,
-      sqlcmd,
-      ...args
+      [
+        'exec',
+        '-i',
+        // map sqlcmd var entries to docker variable entries
+        ...vars.map(v => (v === '-v' ? '-e' : v)),
+        containerId,
+        sqlcmd,
+        ...args,
+      ],
+      { echo: options.echo }
     );
     await cleanup();
     return result;

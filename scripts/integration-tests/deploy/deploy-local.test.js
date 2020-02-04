@@ -1,13 +1,18 @@
 import path from 'path';
 import sql from 'mssql';
+import findSqlcmd from '../../../src/find-sqlcmd';
 import runSqlcmd from '../../../src/index';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-describe('scripts/integration-tests/deploy', () => {
-  it('will run a deployment', async () => {
-    // only test this on windows with sql tools installed
-    if (process.platform !== 'win32') return;
+describe('scripts/integration-tests/deploy/deploy-local', () => {
+  it('will run a local deployment', async () => {
+    // only run if sqlcmd present locally
+    const sqlcmd = await findSqlcmd();
+    if (!sqlcmd) {
+      console.log('No local sqlcmd found, skipping integration test.');
+      return;
+    }
 
     // arrange
     const conn = 'mssql+tcp://sa:Let_Me_In@localhost:51433/';
