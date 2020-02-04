@@ -115,7 +115,7 @@
     ]
   },
   "scripts": {
-    "build": "babel src --out-dir dist --source-maps",
+    "build": "babel src --out-dir dist",
     "postbuild": "node -r esm scripts/postbuild.js",
     "pretest": "eslint \"./**/*.js\"",
     "test": "jest --coverage --runInBand --no-cache",

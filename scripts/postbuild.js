@@ -1,4 +1,10 @@
-import fs from 'fs';
+import fs, { promises as fsp } from 'fs';
+import originalGlob from 'glob';
+
+const glob = pattern =>
+  new Promise((resolve, reject) =>
+    originalGlob(pattern, (err, results) => (err ? reject(err) : resolve(results)))
+  );
 
 export async function main() {
   // create release package.json for dist/
@@ -16,6 +22,9 @@ export async function main() {
   fs.copyFileSync(`${__dirname}/../.npmignore`, `${__dirname}/../dist/.npmignore`);
   fs.copyFileSync(`${__dirname}/../LICENSE`, `${__dirname}/../dist/LICENSE`);
   fs.copyFileSync(`${__dirname}/../README.md`, `${__dirname}/../dist/README.md`);
+
+  var paths = await glob(`${__dirname}/../dist/**/*.test.*`);
+  await Promise.all(paths.map(p => fsp.unlink(p).catch(() => null)));
 }
 
 main().catch(error => {
