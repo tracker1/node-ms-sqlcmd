@@ -10,8 +10,7 @@ describe('scripts/integration-tests/deploy', () => {
     const conn = 'mssql+tcp://sa:Let_Me_In@localhost:51433/';
     const scripts = [path.join(__dirname, 'deploy.sql')];
     const vars = {
-      DatabaseName: 'DeployOverride',
-      DefaultFilePrefix: 'DeployOverride',
+      DatabaseName: 'DeployLocal',
     };
 
     // act
@@ -26,7 +25,7 @@ describe('scripts/integration-tests/deploy', () => {
 
     // assert
     const db = await sql.connect(
-      'mssql://sa:Let_Me_In@localhost:51433/DeployOverride?enableArithAbort=true'
+      'mssql://sa:Let_Me_In@localhost:51433/DeployLocal?enableArithAbort=true'
     );
     const result = await db.query`
       SELECT [Value]

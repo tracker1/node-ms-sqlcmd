@@ -39,7 +39,8 @@ describe('execute-request/get-command', () => {
         sqlcmd: options.sqlcmd,
         docker: options.docker,
         containerId: null,
-        args: [...parseOptions(options), ...parseVars(vars), ...parseScripts(scripts)],
+        vars: parseVars(vars),
+        args: [...parseOptions(options), ...parseScripts(scripts)],
       });
     });
     it('will throw with no options', () => {

@@ -5,15 +5,25 @@ import deleteAll from '../utility/delete-container-files';
 import getCommandArgs from './get-command';
 import exec from '../utility/exec-echo';
 
-const executeDocker = async (options, scripts, vars) => {
+const executeDocker = async (options, scripts, variables) => {
   // copy scripts into container
   scripts = (await copyScripts(options.containerId, scripts)).map(l => l.to);
   const cleanup = () => deleteAll(options.containerId, scripts);
 
   try {
-    const { sqlcmd, containerId, args } = getCommandArgs(options, scripts, vars);
+    const { sqlcmd, containerId, args, vars } = getCommandArgs(options, scripts, variables);
 
-    var result = await exec(options.echo, 'docker', 'exec', '-i', containerId, sqlcmd, ...args);
+    var result = await exec(
+      options.echo,
+      'docker',
+      'exec',
+      '-i',
+      // map sqlcmd var entries to docker variable entries
+      ...vars.map(v => (v === '-v' ? '-e' : v)),
+      containerId,
+      sqlcmd,
+      ...args
+    );
     await cleanup();
     return result;
   } catch (error) {

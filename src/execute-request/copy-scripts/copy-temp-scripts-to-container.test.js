@@ -22,17 +22,19 @@ describe('execute-request/copy-scripts/copy-temp-script-to-container', () => {
   it('will copy file into container (happy path)', async () => {
     dockerCommand.mockReset().mockImplementation(() => Promise.resolve());
     genFileBase.mockReset().mockImplementation(() => 'not_random');
-    const result = await copyScriptToContainer('containerId', 'test-file');
-    expect(result).toEqual({
-      from: 'test-file',
-      to: `${sqlTempPath}/not_random.sql`,
-    });
+    const result = await copyScriptToContainer('containerId', ['test-file']);
+    expect(result).toEqual([
+      {
+        from: 'test-file',
+        to: `${sqlTempPath}/not_random.sql`,
+      },
+    ]);
     expect(genFileBase).toHaveBeenCalledTimes(1);
     expect(dockerCommand).toHaveBeenCalledTimes(2);
     expect(dockerCommand).toHaveBeenNthCalledWith(1, fmtMakeTemp('containerId', sqlTempPath));
     expect(dockerCommand).toHaveBeenNthCalledWith(
       2,
-      fmtCopy('test-file', result.to, 'containerId')
+      fmtCopy('test-file', result[0].to, 'containerId')
     );
   });
 });

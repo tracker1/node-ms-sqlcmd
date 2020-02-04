@@ -66,7 +66,8 @@ const getCommand = (options, scripts, vars) => {
     sqlcmd,
     docker,
     containerId,
-    args: [...parseOptions(options), ...parseVars(vars), ...parseScripts(scripts)],
+    vars: parseVars(vars),
+    args: [...parseOptions(options), ...parseScripts(scripts)],
   };
 };
 
