@@ -27,12 +27,20 @@ describe('scripts/integration-tests/deploy', () => {
     const db = await sql.connect(
       'mssql://sa:Let_Me_In@localhost:51433/DeployDocker?enableArithAbort=true'
     );
-    const result = await db.query`
-      SELECT [Value]
-      FROM [Configuration]
-      WHERE [Key] = ${'DbVersion'}
-    `;
-    expect(result.recordset[0]['Value']).toEqual('1');
-    await db.close(); // close connection
+    try {
+      const result = await db.query`
+        SELECT [Value]
+        FROM [Configuration]
+        WHERE [Key] = ${'DbVersion'}
+      `;
+      expect(result.recordset[0]['Value']).toEqual('1');
+      await db.close(); // close connection
+    } catch (error) {
+      try {
+        await db.close();
+      } catch (_) {}
+      console.log('\n\n', error, '\n\n');
+      throw error;
+    }
   }, 15000);
 });

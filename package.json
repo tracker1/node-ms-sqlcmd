@@ -25,7 +25,6 @@
     "docker-cli-js": "^2.6.0",
     "glob": "^7.1.6",
     "isexe": "^2.0.0",
-    "strip-bom-stream": "^4.0.0",
     "which": "^2.0.2"
   },
   "devDependencies": {
