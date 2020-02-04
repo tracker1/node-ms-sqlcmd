@@ -98,7 +98,11 @@
         "lines": 95,
         "statements": 95
       }
-    }
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/scripts/"
+    ]
   },
   "babel": {
     "plugins": [
