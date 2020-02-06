@@ -1,8 +1,6 @@
 import docker from '@tracker1/docker-cli';
-import spawn from '../../src/utility/spawn';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const isWin = process.platform === 'win32';
 
 const trimCommand = input => input.replace(/[\s\r\n]+/g, ' ').trim();
 
