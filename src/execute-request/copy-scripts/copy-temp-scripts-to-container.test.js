@@ -1,9 +1,9 @@
 // mocks
-jest.mock('../../utility/docker-command', () => jest.fn());
+jest.mock('@tracker1/docker-cli', () => jest.fn());
 jest.mock('../../utility/generate-temp-sql-name', () => ({ genFileBase: jest.fn() }));
 
 // import mocks
-import dockerCommand from '../../utility/docker-command';
+import docker from '@tracker1/docker-cli';
 import { genFileBase } from '../../utility/generate-temp-sql-name';
 
 // import sit
@@ -20,7 +20,7 @@ describe('execute-request/copy-scripts/copy-temp-script-to-container', () => {
     expect(fmtCopy('from', 'to', 'container')).toEqual('cp "from" container:to');
   });
   it('will copy file into container (happy path)', async () => {
-    dockerCommand.mockReset().mockImplementation(() => Promise.resolve());
+    docker.mockReset().mockImplementation(() => Promise.resolve());
     genFileBase.mockReset().mockImplementation(() => 'not_random');
     const result = await copyScriptToContainer('containerId', ['test-file']);
     expect(result).toEqual([
@@ -30,11 +30,8 @@ describe('execute-request/copy-scripts/copy-temp-script-to-container', () => {
       },
     ]);
     expect(genFileBase).toHaveBeenCalledTimes(1);
-    expect(dockerCommand).toHaveBeenCalledTimes(2);
-    expect(dockerCommand).toHaveBeenNthCalledWith(1, fmtMakeTemp('containerId', sqlTempPath));
-    expect(dockerCommand).toHaveBeenNthCalledWith(
-      2,
-      fmtCopy('test-file', result[0].to, 'containerId')
-    );
+    expect(docker).toHaveBeenCalledTimes(2);
+    expect(docker).toHaveBeenNthCalledWith(1, fmtMakeTemp('containerId', sqlTempPath));
+    expect(docker).toHaveBeenNthCalledWith(2, fmtCopy('test-file', result[0].to, 'containerId'));
   });
 });

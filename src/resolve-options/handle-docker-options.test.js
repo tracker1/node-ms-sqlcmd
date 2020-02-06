@@ -49,7 +49,7 @@ describe('resolve-options/handle-docker-options', () => {
 
   it('returns expected when match found', async () => {
     const containerId = Math.random().toString();
-    getDockerInstance.mockReturnValueOnce(Promise.resolve({ 'container id': containerId }));
+    getDockerInstance.mockReturnValueOnce(Promise.resolve({ containerId }));
     expect(await handleDockerOptions(null, { docker: true, port: 50000 })).toEqual({
       docker: true,
       sqlcmd: '/opt/mssql-tools/bin/sqlcmd',

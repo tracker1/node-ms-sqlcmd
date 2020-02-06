@@ -21,8 +21,7 @@
   },
   "homepage": "https://github.com/tracker1/node-ms-sqlcmd#readme",
   "dependencies": {
-    "babel-jest": "^25.1.0",
-    "docker-cli-js": "^2.6.0",
+    "@tracker1/docker-cli": "^0.1.1",
     "glob": "^7.1.6",
     "isexe": "^2.0.0",
     "which": "^2.0.2"
@@ -32,6 +31,7 @@
     "@babel/core": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.8.3",
     "@types/jest": "^25.1.0",
+    "babel-jest": "^25.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-jest": "^23.6.0",

@@ -49,7 +49,7 @@ const handleDockerOptions = async (sqlcmd, options) => {
     server: undefined, // default in-container
     multisubnetFailover: undefined, // clear, not needed
     encryptedConnection: undefined, // clear not needed
-    containerId: dockerProcess['container id'], // matching docker container instance
+    containerId: dockerProcess.containerId, // matching docker container instance
   });
 };
 

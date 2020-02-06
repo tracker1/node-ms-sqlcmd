@@ -2,7 +2,7 @@
 // pretty conventional wrapper around spawn
 import { spawn } from 'child_process';
 
-export default (command, args, { echo = false, ...options }) =>
+export default (command, args, { echo = false, ...options } = {}) =>
   new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
