@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/tracker1/node-ms-sqlcmd#readme",
   "dependencies": {
-    "@tracker1/docker-cli": "^0.1.1",
+    "@tracker1/docker-cli": "^1.0.3",
     "glob": "^7.1.6",
     "isexe": "^2.0.0",
     "which": "^2.0.2"
