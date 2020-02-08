@@ -107,7 +107,7 @@ describe('execute-request/get-command', () => {
       ]);
     });
     it('will return as expected with no server options set', () => {
-      expect(parseOptions({ server: 'test' })).toEqual(['-S', 'test']);
+      expect(parseOptions({ server: 'test' })).toEqual(['-S', 'tcp:test,1433']);
     });
     it('will throw when server not set, docker false', () => {
       expect(() => parseOptions({})).toThrowError('No server specified');
@@ -132,11 +132,33 @@ describe('execute-request/get-command', () => {
         '-N',
       ]);
     });
-    it('will skip server decorations if not set', () => {
+    it('will default server decorations if not set', () => {
       const options = getFullOptions({ protocol: null, instance: null, port: null });
       expect(parseOptions(options)).toEqual([
         '-S',
-        'localhost',
+        'tcp:localhost,1433',
+        '-U',
+        'username',
+        '-P',
+        'password',
+        '-d',
+        'master',
+        '-E',
+        '-A',
+        '-C',
+        '-l',
+        '15',
+        '-K',
+        'ReadOnly',
+        '-M',
+        '-N',
+      ]);
+    });
+    it('will default server decorations for non-tcp', () => {
+      const options = getFullOptions({ protocol: 'lpc', instance: null, port: 5000 });
+      expect(parseOptions(options)).toEqual([
+        '-S',
+        'lpc:localhost',
         '-U',
         'username',
         '-P',
