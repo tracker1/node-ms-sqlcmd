@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 // TODO: temporarily ignore file for coverage
+import path from 'path';
 import copyScripts from './copy-scripts/copy-temp-scripts-to-container';
-import deleteAll from '../utility/delete-container-files';
 import getCommandArgs from './get-command';
 import spawn from '../utility/spawn';
 
@@ -34,7 +34,38 @@ const executeDockerSqlContainer = async (options, scripts, variables) => {
 };
 
 const executeDockerSqltools = async (options, scripts, variables) => {
-  throw new Error('Docker mssql-tools logic not ready.');
+  // get directory from first script
+  const directory = path.dirname(scripts[0]);
+
+  // temp directory for inside contaner (volume mount)
+  const tmpDir = `/tmp/${path.basename(directory)}`;
+
+  // adjust list for in-container paths
+  const list = scripts.map(s => `${tmpDir}/${path.basename(s)}`);
+
+  // get command and args
+  const { sqlcmd, args, vars } = getCommandArgs(options, list, variables);
+
+  // run in a container
+  return spawn(
+    'docker',
+    [
+      'run',
+      '-i',
+      '--rm',
+      '-v',
+      `${directory}:${tmpDir}`,
+
+      // map sqlcmd var entries to docker variable entries
+      ...vars.map(v => (v === '-v' ? '-e' : v)),
+
+      'mcr.microsoft.com/mssql-tools',
+
+      sqlcmd,
+      ...args,
+    ],
+    { echo: options.echo }
+  );
 };
 
 const executeDocker = async (options, scripts, variables) => {

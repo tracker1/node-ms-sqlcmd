@@ -51,6 +51,10 @@ try {
 }
 ```
 
+### Notice
+
+Although there are very thorough unit and integration tests, not all code paths may be well covered, in particular, I'm unable to test the mssql-tools path in an automated fashion, and it may need tweaking.  If you hae sqlcmd installed locally or are using a local, linux docker container for your mssql server instance, it should run fairly reliably.  Feel free to post issues and pull requests are welcome.
+
 ### Errors
 
 The error should have a `code` property.  This will be a string you can match on, or the exit code from `sqlcmd` directly.
@@ -71,11 +75,14 @@ The main portions of the connectionString are as follows: (See Query String sect
 Each section should be URI Component Path encoded (encodeURIComponent).
 
 * Protocol: The connection protocol to use
-  * `mssql:` will use TCP for local sqlcmd or default for docker runs.
-  * `mssql+tcp` - TCP, default for non-docker requests
+  * `mssql:` - preferred, will attempt to autodiscover the best path
+    * sqlcmd found - will use the locally installed copy
+    * no sqlcmd - `localhost` - will try to find a matching mssql instance and run inside the container
+    * no sqlcmd - not `localhost` - will attempt to use mssql-tools via docker
+  * `mssql+tcp` - TCP, default when not `localhost`
   * `msssql+lpc:` - shared memory
   * `mssql+np:` - named pipes
-  * `mssql+docker` - will run a default connection *INSIDE* a named container
+  * `mssql+docker` - will attempt to run inside a container
 * Username: Required for TCP connections, if unspecified will use a Trusted Connection option.
 * Passphrase: Required if Username is specified.
 * ServerName: The name of the server to connect to.
