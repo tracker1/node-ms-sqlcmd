@@ -12,7 +12,7 @@ const parseUrl = connectionString => {
 };
 
 const parseConnectionString = connectionString => {
-  let csurl = parseUrl(connectionString);
+  const csurl = parseUrl(connectionString);
   return {
     ...parseSearch(csurl.searchParams),
     ...parseUrlBase(csurl),

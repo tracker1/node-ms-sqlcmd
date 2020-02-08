@@ -28,17 +28,18 @@ const parseOptions = ({
   // set -S variable if not going to run in docker
   if (!docker) {
     if (!server) throw new Error('No server specified');
-    let svar = server;
-    if (protocol) {
-      svar = `${protocol}:${svar}`;
-    }
-    if (instance) {
-      svar = `${svar}\\` + instance;
-    }
-    if (port) {
-      svar = `${svar},${port}`;
-    }
-    args.push('-S', svar);
+
+    // protocol specified, or tcp
+    protocol = protocol || 'tcp';
+
+    // if protocol is tcp, use port
+    port = protocol === 'tcp' ? `,${port || 1433}` : '';
+
+    // instance has backslash prefixed
+    instance = instance ? `\\${instance}` : '';
+
+    // assemble server variable
+    args.push('-S', `${protocol}:${server}${instance}${port}`);
   }
 
   if (username) args.push('-U', username);
