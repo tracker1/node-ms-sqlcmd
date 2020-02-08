@@ -26,4 +26,22 @@ describe('index - Default method', () => {
     expect(executeRequest).toHaveBeenCalledTimes(1);
     expect(executeRequest).toHaveBeenCalledWith(cs, scr, vars, options);
   });
+
+  it('will use empty object default for vars and options', async () => {
+    const expected = Math.random();
+    executeRequest.mockReset().mockReturnValue(Promise.resolve(expected));
+
+    const cs = Math.random();
+    const scr = Math.random();
+
+    const result = await sit(cs, scr);
+    expect(result).toEqual(expected);
+    expect(executeRequest).toHaveBeenCalledTimes(1);
+    expect(executeRequest).toHaveBeenCalledWith(
+      cs,
+      scr,
+      expect.objectContaining({}),
+      expect.objectContaining({})
+    );
+  });
 });
