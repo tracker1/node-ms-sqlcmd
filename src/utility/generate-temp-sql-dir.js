@@ -1,5 +1,11 @@
 import os from 'os';
 import path from 'path';
+import fs from 'fs';
+
+export const md = directory =>
+  new Promise((resolve, reject) =>
+    fs.mkdir(directory, '0777', err => (err ? reject(err) : resolve(directory)))
+  );
 
 export const genFileBase = () => {
   const dtm = new Date()
@@ -13,9 +19,4 @@ export const genFileBase = () => {
   return `sqlcmd_${dtm}_${rnd}`;
 };
 
-const tempNameGen = () => {
-  const tmp = os.tmpdir();
-  return path.normalize(`${tmp}/${genFileBase()}.sql`);
-};
-
-export default tempNameGen;
+export default async () => md(path.normalize(`${os.tmpdir()}/${genFileBase()}`));

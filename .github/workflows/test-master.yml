@@ -2,7 +2,9 @@ name: Tests
 
 on:
   # Trigger the workflow on push or pull request,
-  # but only for the master branch
+  # but only for the master branch - not tagged
+  tags-ignore:
+      - 'v*'
   push:
     branches:
       - master

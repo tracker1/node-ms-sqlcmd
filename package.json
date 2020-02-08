@@ -24,6 +24,8 @@
     "@tracker1/docker-cli": "^1.0.3",
     "glob": "^7.1.6",
     "isexe": "^2.0.0",
+    "mkdirp": "^1.0.3",
+    "rimraf": "^3.0.1",
     "which": "^2.0.2"
   },
   "devDependencies": {

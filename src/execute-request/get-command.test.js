@@ -135,6 +135,26 @@ describe('execute-request/get-command', () => {
     it('will default server decorations if not set', () => {
       const options = getFullOptions({ protocol: null, instance: null, port: null });
       expect(parseOptions(options)).toEqual([
+        '-U',
+        'username',
+        '-P',
+        'password',
+        '-d',
+        'master',
+        '-E',
+        '-A',
+        '-C',
+        '-l',
+        '15',
+        '-K',
+        'ReadOnly',
+        '-M',
+        '-N',
+      ]);
+    });
+    it('will default server decorations for tcp', () => {
+      const options = getFullOptions({ protocol: 'tcp', instance: null, port: null });
+      expect(parseOptions(options)).toEqual([
         '-S',
         'tcp:localhost,1433',
         '-U',
@@ -155,7 +175,7 @@ describe('execute-request/get-command', () => {
       ]);
     });
     it('will default server decorations for non-tcp', () => {
-      const options = getFullOptions({ protocol: 'lpc', instance: null, port: 5000 });
+      const options = getFullOptions({ protocol: 'lpc', instance: null, port: null });
       expect(parseOptions(options)).toEqual([
         '-S',
         'lpc:localhost',

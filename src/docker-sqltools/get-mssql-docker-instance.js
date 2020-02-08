@@ -5,7 +5,7 @@ const getDockerInstance = port =>
   docker('ps')
     .then(
       result =>
-        result.containerList.filter(c => c.ports.indexOf(`:${+port}->1433/tcp`) >= 0)[0] || null
+        result.containerList.filter(c => c.ports.indexOf(`:${+port}->1433/tcp`) >= 0)[0].containerId
     )
     .catch(() => null);
 

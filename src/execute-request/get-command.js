@@ -3,6 +3,12 @@ const parseVars = (vars = {}) =>
 
 const parseScripts = scripts => scripts.reduce((arr, script) => arr.concat('-i', script), []);
 
+const isTcp = ({ protocol, server, port }) => {
+  if (port) return true;
+  if (protocol === 'tcp') return true;
+  if (server !== 'localhost') return true;
+};
+
 const parseOptions = ({
   // parsed options object
   // sqlcmd, //String - unused here
@@ -25,21 +31,25 @@ const parseOptions = ({
 }) => {
   const args = [];
 
-  // set -S variable if not going to run in docker
-  if (!docker) {
+  // set -S variable if not going to run in local docker instance
+  if (server !== 'localhost' || !docker) {
     if (!server) throw new Error('No server specified');
 
-    // protocol specified, or tcp
-    protocol = protocol || 'tcp';
-
-    // if protocol is tcp, use port
-    port = protocol === 'tcp' ? `,${port || 1433}` : '';
+    if (isTcp({ protocol, server, port })) {
+      protocol = 'tcp:';
+      port = `,${port || 1433}`;
+    } else {
+      protocol = protocol ? `${protocol}:` : '';
+      port = '';
+    }
 
     // instance has backslash prefixed
     instance = instance ? `\\${instance}` : '';
 
     // assemble server variable
-    args.push('-S', `${protocol}:${server}${instance}${port}`);
+    if (protocol || instance || server !== 'localhost') {
+      args.push('-S', `${protocol}${server}${instance}${port}`);
+    }
   }
 
   if (username) args.push('-U', username);

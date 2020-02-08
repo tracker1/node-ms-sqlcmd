@@ -1,6 +1,10 @@
-import deleteAll from '../../utility/delete-all';
-import generateTempName from '../../utility/generate-temp-sql-name';
+import path from 'path';
+import rimrafFn from 'rimraf';
+import generateTempDir from '../../utility/generate-temp-sql-dir';
 import copyFile from '../../utility/copy-utf8-to-utf16le';
+
+const rimraf = dir =>
+  new Promise((resolve, reject) => rimrafFn(dir, err => (err ? reject(err) : resolve())));
 
 const copyInputScripts = async scripts => {
   // scripts is required
@@ -11,23 +15,27 @@ const copyInputScripts = async scripts => {
     scripts = [scripts];
   }
 
+  const directory = await generateTempDir();
+  const cleanup = () => rimraf(directory).catch(_ => null);
+
   // generate list for from/to first - for cleanup in case of error
-  const fromToList = scripts.map(from => ({
+  const scriptList = scripts.map(from => ({
     from,
-    to: generateTempName(),
+    to: path.normalize(`${directory}/${path.basename(from)}`),
   }));
 
   // copy from utf8 to utf16le in temp location
   try {
-    await Promise.all(fromToList.map(f => copyFile(f)));
+    return {
+      directory,
+      cleanup,
+      list: await Promise.all(scriptList.map(f => copyFile(f))),
+    };
   } catch (error) {
     // In case of error, clean up temporary file(s)
-    await deleteAll(fromToList.map(item => item.to));
+    await cleanup(directory);
     throw error;
   }
-
-  // return copied list of files
-  return fromToList;
 };
 
 export default copyInputScripts;

@@ -5,13 +5,12 @@ import deleteAll from '../utility/delete-container-files';
 import getCommandArgs from './get-command';
 import spawn from '../utility/spawn';
 
-const executeDocker = async (options, scripts, variables) => {
+const executeDockerSqlContainer = async (options, scripts, variables) => {
   // copy scripts into container
-  scripts = (await copyScripts(options.containerId, scripts)).map(l => l.to);
-  const cleanup = () => deleteAll(options.containerId, scripts);
+  let { list, cleanup } = await copyScripts(options.containerId, scripts);
 
   try {
-    const { sqlcmd, containerId, args, vars } = getCommandArgs(options, scripts, variables);
+    const { sqlcmd, containerId, args, vars } = getCommandArgs(options, list, variables);
 
     var result = await spawn(
       'docker',
@@ -32,6 +31,17 @@ const executeDocker = async (options, scripts, variables) => {
     await cleanup();
     throw error;
   }
+};
+
+const executeDockerSqltools = async (options, scripts, variables) => {
+  throw new Error('Docker mssql-tools logic not ready.');
+};
+
+const executeDocker = async (options, scripts, variables) => {
+  if (options.containerId) {
+    return executeDockerSqlContainer(options, scripts, variables);
+  }
+  return executeDockerSqltools(options, scripts, variables);
 };
 
 export default executeDocker;

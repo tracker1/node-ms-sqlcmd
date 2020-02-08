@@ -1,4 +1,5 @@
-import getDockerInstance from './get-mssql-docker-instance';
+import { getDockerInstance, hasDocker } from '../docker-sqltools';
+
 import { generateError, DOCKER_NOT_FOUND } from '../errors';
 
 const handleDockerOptions = async (sqlcmd, options) => {
@@ -9,25 +10,34 @@ const handleDockerOptions = async (sqlcmd, options) => {
     return null; // nothing to do
   }
 
-  // no docker options - check automatic fallback to docker
-  if (!options.docker) {
-    // only valid auto fallback for localhost
-    if (options.server != 'localhost') {
-      // will only test against localhost
-      return null;
+  // if protocol set and not tcp, invalid for docker use
+  if (options.protocol && options.protocol !== 'tcp') {
+    return null;
+  }
+
+  // remote server - use docker mssql-tools path
+  if (options.server !== 'localhost') {
+    if (await hasDocker()) {
+      // set docker true, but do not override other options
+      return { ...options, docker: true, sqlcmd: '/opt/mssql-tools/bin/sqlcmd' };
     }
 
-    // if protocol set and not tcp, invalid for auto config
-    if (options.protocol && options.protocol !== 'tcp') {
-      return null;
+    // expecting docker locally
+    if (options.docker) {
+      throw generateError('Unable to load mssql-tools via docker locally', {
+        code: DOCKER_NOT_FOUND,
+      });
     }
+
+    // autodetect failed - return null
+    return null;
   }
 
   // get matching docker instance
-  const dockerProcess = await getDockerInstance(options.port || 1433);
+  const containerId = await getDockerInstance(options.port || 1433);
 
   // no matching docker instance
-  if (!dockerProcess) {
+  if (!containerId) {
     // if expecting a docker instance
     if (options.docker) {
       throw generateError(
@@ -46,10 +56,10 @@ const handleDockerOptions = async (sqlcmd, options) => {
     sqlcmd: '/opt/mssql-tools/bin/sqlcmd',
     protocol: undefined, // default in-container
     port: undefined, // default in-container
-    server: undefined, // default in-container
+    server: 'localhost', // will use default
     multisubnetFailover: undefined, // clear, not needed
     encryptedConnection: undefined, // clear not needed
-    containerId: dockerProcess.containerId, // matching docker container instance
+    containerId, // matching docker container instance
   });
 };
 
