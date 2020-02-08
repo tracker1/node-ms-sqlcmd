@@ -2,10 +2,10 @@ name: Tests
 
 on:
   # Trigger the workflow on push or pull request,
-  # but only for the master branch - not tagged
-  tags-ignore:
-      - 'v*'
+  # but only for the master branch
   push:
+    tags-ignore: 
+      - v*
     branches:
       - master
   pull_request:
