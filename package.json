@@ -1,6 +1,6 @@
 {
   "name": "ms-sqlcmd",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Wrapper library for sqlcmd locally or inside a docker instance.",
   "main": "index.js",
   "repository": {
