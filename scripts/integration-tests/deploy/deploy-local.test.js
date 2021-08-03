@@ -23,7 +23,7 @@ describe('scripts/integration-tests/deploy/deploy-local', () => {
 
     // act
     try {
-      await runSqlcmd(conn, scripts, vars, { echo: true });
+      await runSqlcmd(conn, scripts, vars, { echo: false });
     } catch (error) {
       // display error and rethrow - this shouldn't happen
       console.log('\n\n', error, '\n\n');
@@ -32,9 +32,17 @@ describe('scripts/integration-tests/deploy/deploy-local', () => {
     await delay(2000);
 
     // assert
-    const db = await sql.connect(
-      'mssql://sa:Let_Me_In@localhost:51433/DeployLocal?enableArithAbort=true'
-    );
+    const db = await sql.connect({
+      user: 'sa',
+      password: 'Let_Me_In',
+      server: 'localhost',
+      port: 51433,
+      database: 'DeployLocal',
+      options: {
+        enableArithAbort: true,
+        trustServerCertificate: true,
+      },
+    });
     try {
       const result = await db.query`
         SELECT [Value]

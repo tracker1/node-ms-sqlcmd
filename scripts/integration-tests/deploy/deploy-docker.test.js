@@ -24,9 +24,17 @@ describe('scripts/integration-tests/deploy/deploy-docker', () => {
     await delay(2000);
 
     // assert
-    const db = await sql.connect(
-      'mssql://sa:Let_Me_In@localhost:51433/DeployDocker?enableArithAbort=true'
-    );
+    const db = await sql.connect({
+      user: 'sa',
+      password: 'Let_Me_In',
+      server: 'localhost',
+      port: 51433,
+      database: 'DeployLocal',
+      options: {
+        enableArithAbort: true,
+        trustServerCertificate: true,
+      },
+    });
     try {
       const result = await db.query`
         SELECT [Value]
