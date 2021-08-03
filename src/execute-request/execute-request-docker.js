@@ -18,7 +18,7 @@ const executeDockerSqlContainer = async (options, scripts, variables) => {
         'exec',
         '-i',
         // map sqlcmd var entries to docker variable entries
-        ...vars.map(v => (v === '-v' ? '-e' : v)),
+        ...vars.map((v) => (v === '-v' ? '-e' : v)),
         containerId,
         sqlcmd,
         ...args,
@@ -41,7 +41,7 @@ const executeDockerSqltools = async (options, scripts, variables) => {
   const tmpDir = `/tmp/${path.basename(directory)}`;
 
   // adjust list for in-container paths
-  const list = scripts.map(s => `${tmpDir}/${path.basename(s)}`);
+  const list = scripts.map((s) => `${tmpDir}/${path.basename(s)}`);
 
   // get command and args
   const { sqlcmd, args, vars } = getCommandArgs(options, list, variables);
@@ -57,7 +57,7 @@ const executeDockerSqltools = async (options, scripts, variables) => {
       `${directory}:${tmpDir}`,
 
       // map sqlcmd var entries to docker variable entries
-      ...vars.map(v => (v === '-v' ? '-e' : v)),
+      ...vars.map((v) => (v === '-v' ? '-e' : v)),
 
       'mcr.microsoft.com/mssql-tools',
 

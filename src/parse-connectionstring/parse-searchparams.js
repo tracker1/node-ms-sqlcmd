@@ -41,14 +41,14 @@ const mapParam = ([name, value]) => {
   return {};
 };
 
-const clearNull = o =>
+const clearNull = (o) =>
   Object.entries(o)
-    .filter(kv => kv[1] !== null)
+    .filter((kv) => kv[1] !== null)
     .reduce((o, [k, v]) => Object.assign(o, { [k]: v }), {});
 
 const reduceParam = (o, param) => Object.assign(o, mapParam(param));
 
-const parseParams = params => clearNull(params.reduce(reduceParam, {}));
+const parseParams = (params) => clearNull(params.reduce(reduceParam, {}));
 
 export const __internal = { parseBool, parseSeconds, mapParam, reduceParam };
-export default searchParams => parseParams(Array.from(searchParams));
+export default (searchParams) => parseParams(Array.from(searchParams));

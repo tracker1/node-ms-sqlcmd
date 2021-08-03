@@ -7,7 +7,7 @@ const knownPaths = [
   'C:/Program Files (x86)/Microsoft SQL Server/*/Tools/Binn/sqlcmd.exe',
 ];
 
-const knownPathsNix = knownPaths.map(p => p.replace(/^(\w)\:/, m => m[0].toLowerCase()));
+const knownPathsNix = knownPaths.map((p) => p.replace(/^(\w)\:/, (m) => m[0].toLowerCase()));
 
 const getKnownPaths = (platform = process.platform, ostype = process.env.OSTYPE) => {
   if (platform === 'linux') return linuxPaths;

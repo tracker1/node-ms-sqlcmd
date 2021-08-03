@@ -11,15 +11,15 @@ export default (command, args = [], { echo = false, ...options } = {}) =>
       console.log(`spawn ${command} ${args.join(' ')}`);
     }
     const proc = spawn(command, args, options);
-    proc.stdout.on('data', msg => {
+    proc.stdout.on('data', (msg) => {
       if (echo) process.stdout.write(msg);
       stdout += msg.toString('utf8');
     });
-    proc.stderr.on('data', msg => {
+    proc.stderr.on('data', (msg) => {
       if (echo) process.stderr.write(msg);
       stderr += msg.toString('utf8');
     });
-    proc.on('exit', code => {
+    proc.on('exit', (code) => {
       if (code === 0) {
         return resolve({ code, stdout, stderr });
       }
@@ -27,7 +27,7 @@ export default (command, args = [], { echo = false, ...options } = {}) =>
         Object.assign(new Error('Execution failed'), { code, stdout, stderr, command, args })
       );
     });
-    proc.on('error', error => {
+    proc.on('error', (error) => {
       if (error.code === 'ENOENT' && error.path === command) {
         return reject(
           Object.assign(

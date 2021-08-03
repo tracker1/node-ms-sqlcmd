@@ -26,7 +26,7 @@ describe('execute-request/index', () => {
   beforeEach(() => {
     options = {};
     cleanup.mockReset().mockImplementation(() => Promise.resolve());
-    copyScripts.mockReset().mockImplementation(list =>
+    copyScripts.mockReset().mockImplementation((list) =>
       Promise.resolve({
         directory: '/to',
         cleanup,

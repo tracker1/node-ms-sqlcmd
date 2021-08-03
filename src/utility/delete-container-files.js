@@ -7,6 +7,6 @@ const formatDelete = (containerId, file) => `exec -i ${containerId} rm ${file}`;
 const deleteFile = (containerId, file) => docker(formatDelete(containerId, file)).catch(() => null);
 
 const deleteFiles = (containerId, list) =>
-  Promise.all(list.map(file => deleteFile(containerId, file))).then(() => null);
+  Promise.all(list.map((file) => deleteFile(containerId, file))).then(() => null);
 
 export default deleteFiles;

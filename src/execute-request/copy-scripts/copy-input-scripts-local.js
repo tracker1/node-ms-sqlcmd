@@ -3,10 +3,10 @@ import rimrafFn from 'rimraf';
 import generateTempDir from '../../utility/generate-temp-sql-dir';
 import copyFile from '../../utility/copy-utf8-to-utf16le';
 
-const rimraf = dir =>
-  new Promise((resolve, reject) => rimrafFn(dir, err => (err ? reject(err) : resolve())));
+const rimraf = (dir) =>
+  new Promise((resolve, reject) => rimrafFn(dir, (err) => (err ? reject(err) : resolve())));
 
-const copyInputScripts = async scripts => {
+const copyInputScripts = async (scripts) => {
   // scripts is required
   if (!scripts) throw new Error('No sql scripts specified');
 
@@ -16,10 +16,10 @@ const copyInputScripts = async scripts => {
   }
 
   const directory = await generateTempDir();
-  const cleanup = () => rimraf(directory).catch(_ => null);
+  const cleanup = () => rimraf(directory).catch((_) => null);
 
   // generate list for from/to first - for cleanup in case of error
-  const scriptList = scripts.map(from => ({
+  const scriptList = scripts.map((from) => ({
     from,
     to: path.normalize(`${directory}/${path.basename(from)}`),
   }));
@@ -29,7 +29,7 @@ const copyInputScripts = async scripts => {
     return {
       directory,
       cleanup,
-      list: await Promise.all(scriptList.map(f => copyFile(f))),
+      list: await Promise.all(scriptList.map((f) => copyFile(f))),
     };
   } catch (error) {
     // In case of error, clean up temporary file(s)

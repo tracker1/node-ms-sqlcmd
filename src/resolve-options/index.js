@@ -3,7 +3,7 @@ import parseConnectionString from '../parse-connectionstring';
 import handleDockerOptions from './handle-docker-options';
 import { SQLCMD_NOT_FOUND_ERROR } from '../errors';
 
-const resolveOptions = async mssqlConnectionString => {
+const resolveOptions = async (mssqlConnectionString) => {
   // get sqlcmd command path
   let sqlcmd = await findSqlCmd();
 

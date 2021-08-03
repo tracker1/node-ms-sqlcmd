@@ -1,6 +1,6 @@
 import { invalidConnectionString } from '../errors';
 
-const parseProtocol = protocol => {
+const parseProtocol = (protocol) => {
   switch (protocol) {
     case 'mssql:':
       return null; // default
@@ -25,14 +25,14 @@ const parseUsernamePassword = ({ username, password }) => {
   return { trustedConnection: true };
 };
 
-const parsePath = pathname => {
-  const parts = pathname.split(/[\\\/]+/g).filter(p => p);
+const parsePath = (pathname) => {
+  const parts = pathname.split(/[\\\/]+/g).filter((p) => p);
   if (parts.length === 0) return null;
   if (parts.length === 1) return { database: parts[0] };
   return { database: parts[1], instance: parts[0] };
 };
 
-const parseUrlBase = url => ({
+const parseUrlBase = (url) => ({
   ...parseProtocol(url.protocol),
   ...parseUsernamePassword(url),
   ...parsePath(url.pathname),

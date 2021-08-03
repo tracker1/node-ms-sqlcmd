@@ -13,10 +13,10 @@ export const DOCKER_NOT_FOUND_MESSAGE = 'The docker command was not found.';
 export const generateError = (message, props) =>
   Object.assign(new Error(message), { stack: undefined, ...props });
 
-export const wrapUnexpectedError = innerError =>
+export const wrapUnexpectedError = (innerError) =>
   generateError(UNEXPECTED_ERROR_MESSAGE, { code: UNEXPECTED_ERROR, innerError });
 
-export const invalidConnectionString = props =>
+export const invalidConnectionString = (props) =>
   generateError(INVALID_CONNECTION_STRING_MESSAGE, { code: INVALID_CONNECTION_STRING, ...props });
 
 export const SQLCMD_NOT_FOUND_ERROR = generateError(SQLCMD_NOT_FOUND_MESSAGE, {

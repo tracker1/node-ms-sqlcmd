@@ -25,7 +25,7 @@ describe('parse-connectionstring/index - default', () => {
       multisubnetFailover: true,
       encryptedConnection: true,
     })
-      .map(kv => kv.map(s => encodeURIComponent(String(s))).join('='))
+      .map((kv) => kv.map((s) => encodeURIComponent(String(s))).join('='))
       .join('&');
 
     expect(parseConnectionString(`${baseUrl}?${params}`)).toEqual({

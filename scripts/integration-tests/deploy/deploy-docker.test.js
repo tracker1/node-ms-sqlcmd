@@ -15,7 +15,7 @@ describe('scripts/integration-tests/deploy/deploy-docker', () => {
 
     // act
     try {
-      await runSqlcmd(conn, scripts, vars, { echo: true });
+      await runSqlcmd(conn, scripts, vars, { echo: false });
     } catch (error) {
       // display error and rethrow - this shouldn't happen
       console.log('\n\n', error, '\n\n');

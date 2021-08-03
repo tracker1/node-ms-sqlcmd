@@ -1,7 +1,7 @@
 const parseVars = (vars = {}) =>
   Object.entries(vars).reduce((arr, [name, value]) => arr.concat('-v', `${name}=${value}`), []);
 
-const parseScripts = scripts => scripts.reduce((arr, script) => arr.concat('-i', script), []);
+const parseScripts = (scripts) => scripts.reduce((arr, script) => arr.concat('-i', script), []);
 
 const isTcp = ({ protocol, server, port }) => {
   if (port) return true;

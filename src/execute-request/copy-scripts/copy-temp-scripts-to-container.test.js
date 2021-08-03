@@ -46,7 +46,7 @@ describe('execute-request/copy-scripts/copy-temp-script-to-container', () => {
   });
 
   it('will handle copy errors as expected', async () => {
-    docker.mockReset().mockImplementation(cmd => {
+    docker.mockReset().mockImplementation((cmd) => {
       if (/mkdir/.test(cmd)) return Promise.resolve();
       return Promise.reject('error');
     });
